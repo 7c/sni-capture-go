@@ -1,0 +1,78 @@
+## only release on linux for cross-platform
+## apt install -y libpcap-dev build-essential 
+## apt install -y gcc-aarch64-linux-gnu g++-aarch64-linux-gnu binutils-aarch64-linux-gnu
+version: 2
+
+before:
+  hooks:
+    - go mod tidy
+    - go generate ./...
+
+builds:
+  - id: linux-amd64
+    goos: [linux]
+    goarch: [amd64]
+    env:
+      - CGO_ENABLED=1
+      - CC=gcc
+    ldflags:
+      - -s -w
+
+  - id: windows-amd64
+    goos: [windows]
+    goarch: [amd64]
+    env:
+      - CGO_ENABLED=0
+
+  # - id: darwin-arm64
+  #   goos: [darwin]
+  #   goarch: [arm64]
+  #   env:
+  #     - CGO_ENABLED=1
+  #     - CC=aarch64-linux-gnu-gcc
+
+nfpms:
+  - id: linux-amd64
+    package_name: "sni-capture-go"
+    file_name_template: "{{ .PackageName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    builds:
+      - linux-amd64 # <-- match this ID
+    vendor: "7c"
+    homepage: "https://github.com/7c/sni-capture-go"
+    license: "MIT"
+    maintainer: "7c <7c@github>"
+    description: "TLS SNI Capture Tool"
+    bindir: "/usr/bin"
+    formats:
+      - deb
+    conflicts:
+      - sni-capture-go
+    # contents:
+    #   - src: "./dist/linux-amd64_linux_amd64_v1/sni-capture-go"
+    #     dst: "/usr/bin/sni-capture-go"
+    #     file_info:
+    #       mode: 0755
+    #       owner: root
+    #       group: root
+    
+archives:
+  - format: tar.gz
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+      {{- if .Arm }}v{{ .Arm }}{{ end }}
+    format_overrides:
+      - goos: windows
+        format: zip
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+
+release:
