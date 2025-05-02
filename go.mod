@@ -1,8 +1,6 @@
 module github.com/7c/sni-capture-go
 
-go 1.23.0
-
-toolchain go1.23.5
+go 1.23.5
 
 require (
 	github.com/7c/mygobase v0.0.12
