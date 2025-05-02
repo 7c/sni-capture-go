@@ -1,3 +1,4 @@
 bin/
 project.md
 go.sum
+.goreleaser.yaml
