@@ -2,3 +2,5 @@ bin/
 project.md
 go.sum
 .goreleaser.yaml
+dist/
+.DS_Store
