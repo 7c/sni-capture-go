@@ -39,5 +39,6 @@ RUN curl -sL https://github.com/goreleaser/goreleaser/releases/latest/download/g
     | tar xz -C /usr/local/bin goreleaser
 
 WORKDIR /app
-ENTRYPOINT ["goreleaser", "release", "--skip=publish", "--clean", "--skip=validate"]
+# ENTRYPOINT ["goreleaser", "release", "--skip=publish", "--clean", "--skip=validate"]
+ENTRYPOINT ["goreleaser", "release", "--clean", "--skip=validate"]
 # ENTRYPOINT ["bash"]
