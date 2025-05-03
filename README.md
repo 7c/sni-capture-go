@@ -15,11 +15,14 @@ A tool to capture Server Name Indication (SNI) information from TLS handshakes a
 ## Installation
 
 ```bash
+apt install -y libpcap-dev build-essential
+export CGO_ENABLED=1
 go install github.com/7c/sni-capture-go@latest
 ```
 
 ## Build from source
 ```bash
+apt install -y libpcap-dev build-essential
 go build -o sni-capture-go main.go
 ## or
 make
